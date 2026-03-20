@@ -11,9 +11,10 @@ interface Props {
 	setSearch: (s: string) => void;
 	sort: SortOption;
 	setSort: (s: SortOption) => void;
-	remove: (id: string) => void;
-	doExport: () => void;
-	doImport: (file: File) => void;
+	remove: (id: string) => Promise<void>;
+	doExport: () => Promise<void>;
+	doImport: (file: File) => Promise<void>;
+	importError: string | null;
 }
 
 export function ListTab({
@@ -25,6 +26,7 @@ export function ListTab({
 	remove,
 	doExport,
 	doImport,
+	importError,
 }: Props) {
 	const fileRef = useRef<HTMLInputElement>(null);
 	const groups = groupByVideo(bookmarks);
@@ -53,6 +55,7 @@ export function ListTab({
 					}}
 				/>
 			</div>
+			{importError && <div className="status-msg error">{importError}</div>}
 			{bookmarks.length === 0 ? (
 				<div className="empty-state">
 					{search ? "No bookmarks match your search." : "No bookmarks yet. Start bookmarking!"}

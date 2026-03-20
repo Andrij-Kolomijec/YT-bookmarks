@@ -5,23 +5,31 @@ interface Props {
 	onChange: (value: SortOption) => void;
 }
 
-const OPTIONS: { value: SortOption; label: string }[] = [
-	{ value: "newest", label: "Newest" },
-	{ value: "oldest", label: "Oldest" },
-	{ value: "video", label: "By Video" },
-	{ value: "channel", label: "By Channel" },
-];
+const SORT_OPTIONS: SortOption[] = ["newest", "oldest", "video", "channel"];
+
+const LABELS: Record<SortOption, string> = {
+	newest: "Newest",
+	oldest: "Oldest",
+	video: "By Video",
+	channel: "By Channel",
+};
+
+function isSortOption(value: string): value is SortOption {
+	return (SORT_OPTIONS as string[]).includes(value);
+}
 
 export function SortSelect({ value, onChange }: Props) {
 	return (
 		<select
 			className="sort-select"
 			value={value}
-			onChange={(e) => onChange(e.target.value as SortOption)}
+			onChange={(e) => {
+				if (isSortOption(e.target.value)) onChange(e.target.value);
+			}}
 		>
-			{OPTIONS.map((o) => (
-				<option key={o.value} value={o.value}>
-					{o.label}
+			{SORT_OPTIONS.map((o) => (
+				<option key={o} value={o}>
+					{LABELS[o]}
 				</option>
 			))}
 		</select>
