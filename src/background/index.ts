@@ -1,3 +1,4 @@
+import { STORAGE_KEY } from "../shared/constants";
 import { addBookmark, getBookmarksForVideo } from "../shared/storage";
 import type { Bookmark, VideoInfo } from "../shared/types";
 
@@ -47,7 +48,7 @@ chrome.commands.onCommand.addListener(async (command) => {
 });
 
 chrome.storage.onChanged.addListener(async (changes) => {
-	if (!changes.yt_bookmarks) return;
+	if (!changes[STORAGE_KEY]) return;
 	const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 	if (!tab?.id || !tab.url?.includes("youtube.com/watch")) return;
 	const url = new URL(tab.url);
