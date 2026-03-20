@@ -71,12 +71,28 @@ export async function exportBookmarks(): Promise<string> {
 }
 
 export async function importBookmarks(json: string): Promise<Bookmark[]> {
-	const imported: Bookmark[] = JSON.parse(json);
-	for (const b of imported) {
-		if (!b.id || !b.videoId || typeof b.timestamp !== "number") {
-			throw new Error("Invalid bookmark format");
+	const parsed: unknown = JSON.parse(json);
+	if (!Array.isArray(parsed)) {
+		throw new Error("Invalid bookmark format: expected an array");
+	}
+	for (const b of parsed) {
+		if (
+			typeof b !== "object" ||
+			b === null ||
+			typeof b.id !== "string" ||
+			typeof b.videoId !== "string" ||
+			typeof b.videoTitle !== "string" ||
+			typeof b.videoUrl !== "string" ||
+			typeof b.channelName !== "string" ||
+			typeof b.thumbnailUrl !== "string" ||
+			typeof b.timestamp !== "number" ||
+			typeof b.note !== "string" ||
+			typeof b.createdAt !== "number"
+		) {
+			throw new Error("Invalid bookmark format: missing or malformed fields");
 		}
 	}
+	const imported = parsed as Bookmark[];
 	const existing = await getBookmarks();
 	const existingIds = new Set(existing.map((b) => b.id));
 	const newBookmarks = imported.filter((b) => !existingIds.has(b.id));
