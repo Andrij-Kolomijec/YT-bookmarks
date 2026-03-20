@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { VideoInfo } from "../../shared/types";
 import { NoteInput } from "./NoteInput";
 import { TimeInput } from "./TimeInput";
@@ -14,12 +14,12 @@ export function BookmarkTab({ videoInfo, loading, onBookmark }: Props) {
 	const [note, setNote] = useState("");
 	const [status, setStatus] = useState<{ type: "success" | "error"; msg: string } | null>(null);
 	const [saving, setSaving] = useState(false);
-	const [initialized, setInitialized] = useState(false);
 
-	if (videoInfo && !initialized && videoInfo.currentTime > 0) {
-		setTimestamp(videoInfo.currentTime);
-		setInitialized(true);
-	}
+	useEffect(() => {
+		if (videoInfo && videoInfo.currentTime > 0) {
+			setTimestamp(videoInfo.currentTime);
+		}
+	}, [videoInfo]);
 
 	if (loading) {
 		return <div className="status-msg info">Loading...</div>;
