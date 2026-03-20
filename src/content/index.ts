@@ -1,5 +1,18 @@
 import type { Message, VideoInfo } from "../shared/types";
 
+function buildVideoUrl(videoId: string, params: URLSearchParams): string {
+	const url = new URL("https://www.youtube.com/watch");
+	url.searchParams.set("v", videoId);
+	// Preserve playlist context if present
+	const list = params.get("list");
+	if (list) {
+		url.searchParams.set("list", list);
+		const index = params.get("index");
+		if (index) url.searchParams.set("index", index);
+	}
+	return url.toString();
+}
+
 function getVideoInfo(): VideoInfo | null {
 	const video = document.querySelector("video");
 	if (!video) return null;
@@ -18,7 +31,7 @@ function getVideoInfo(): VideoInfo | null {
 	return {
 		videoId,
 		videoTitle: titleEl?.textContent?.trim() ?? "Unknown Title",
-		videoUrl: `https://www.youtube.com/watch?v=${videoId}`,
+		videoUrl: buildVideoUrl(videoId, urlParams),
 		channelName: channelEl?.textContent?.trim() ?? "Unknown Channel",
 		thumbnailUrl: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
 		currentTime: Math.floor(video.currentTime),
