@@ -21,18 +21,28 @@ function getVideoInfo(): VideoInfo | null {
 	const videoId = urlParams.get("v");
 	if (!videoId) return null;
 
-	const titleEl = document.querySelector(
-		"yt-formatted-string.style-scope.ytd-watch-metadata",
-	) as HTMLElement | null;
-	const channelEl = document.querySelector(
-		"ytd-channel-name yt-formatted-string a",
-	) as HTMLAnchorElement | null;
+	const videoTitle =
+		(
+			document.querySelector("yt-formatted-string.style-scope.ytd-watch-metadata") ??
+			document.querySelector("h1.ytd-watch-metadata yt-formatted-string") ??
+			document.querySelector("#title h1")
+		)?.textContent?.trim() ||
+		// Last resort: strip " - YouTube" suffix from document.title
+		document.title.replace(/\s*-\s*YouTube$/i, "") ||
+		"Unknown Title";
+
+	const channelName =
+		(
+			document.querySelector("ytd-channel-name yt-formatted-string a") ??
+			document.querySelector("ytd-video-owner-renderer a") ??
+			document.querySelector("#owner #channel-name a")
+		)?.textContent?.trim() || "Unknown Channel";
 
 	return {
 		videoId,
-		videoTitle: titleEl?.textContent?.trim() ?? "Unknown Title",
+		videoTitle,
 		videoUrl: buildVideoUrl(videoId, urlParams),
-		channelName: channelEl?.textContent?.trim() ?? "Unknown Channel",
+		channelName,
 		thumbnailUrl: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
 		currentTime: Math.floor(video.currentTime),
 	};
