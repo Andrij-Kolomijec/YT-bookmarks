@@ -52,6 +52,7 @@ export function ListTab({
 					onChange={(e) => {
 						const file = e.target.files?.[0];
 						if (file) doImport(file);
+						e.target.value = "";
 					}}
 				/>
 			</div>

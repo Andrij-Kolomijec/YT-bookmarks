@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { STORAGE_KEY } from "../../shared/constants";
 import {
 	addBookmark,
 	deleteBookmark,
@@ -25,8 +26,8 @@ export function useBookmarks() {
 	}, [load]);
 
 	useEffect(() => {
-		const listener = () => {
-			load();
+		const listener = (changes: { [key: string]: chrome.storage.StorageChange }) => {
+			if (changes[STORAGE_KEY]) load();
 		};
 		chrome.storage.onChanged.addListener(listener);
 		return () => chrome.storage.onChanged.removeListener(listener);
@@ -38,9 +39,10 @@ export function useBookmarks() {
 	// State sync is handled by the storage.onChanged listener above,
 	// so we don't call setBookmarks here (avoids double renders).
 	const add = async (videoInfo: VideoInfo, timestamp: number, note: string) => {
+		const { currentTime: _, ...videoData } = videoInfo;
 		const bookmark: Bookmark = {
 			id: crypto.randomUUID(),
-			...videoInfo,
+			...videoData,
 			timestamp,
 			note,
 			createdAt: Date.now(),

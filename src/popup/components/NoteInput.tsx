@@ -11,6 +11,7 @@ export function NoteInput({ value, onChange }: Props) {
 			value={value}
 			onChange={(e) => onChange(e.target.value)}
 			rows={2}
+			maxLength={1000}
 		/>
 	);
 }
