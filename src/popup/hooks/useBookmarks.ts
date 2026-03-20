@@ -35,6 +35,8 @@ export function useBookmarks() {
 	const filtered = filterBookmarks(bookmarks, search);
 	const sorted = sortBookmarks(filtered, sort);
 
+	// State sync is handled by the storage.onChanged listener above,
+	// so we don't call setBookmarks here (avoids double renders).
 	const add = async (videoInfo: VideoInfo, timestamp: number, note: string) => {
 		const bookmark: Bookmark = {
 			id: crypto.randomUUID(),
@@ -43,13 +45,11 @@ export function useBookmarks() {
 			note,
 			createdAt: Date.now(),
 		};
-		const updated = await addBookmark(bookmark);
-		setBookmarks(updated);
+		await addBookmark(bookmark);
 	};
 
 	const remove = async (id: string) => {
-		const updated = await deleteBookmark(id);
-		setBookmarks(updated);
+		await deleteBookmark(id);
 	};
 
 	const doExport = async () => {
@@ -63,10 +63,16 @@ export function useBookmarks() {
 		URL.revokeObjectURL(url);
 	};
 
+	const [importError, setImportError] = useState<string | null>(null);
+
 	const doImport = async (file: File) => {
-		const text = await file.text();
-		const updated = await importBookmarks(text);
-		setBookmarks(updated);
+		setImportError(null);
+		try {
+			const text = await file.text();
+			await importBookmarks(text);
+		} catch (e) {
+			setImportError(e instanceof Error ? e.message : "Failed to import bookmarks");
+		}
 	};
 
 	return {
@@ -79,6 +85,7 @@ export function useBookmarks() {
 		remove,
 		doExport,
 		doImport,
+		importError,
 	};
 }
 
