@@ -16,6 +16,7 @@ interface Props {
 	doImport: (file: File) => Promise<void>;
 	importError: string | null;
 	rewindSeconds: number;
+	openInNewTab: boolean;
 }
 
 export function ListTab({
@@ -29,6 +30,7 @@ export function ListTab({
 	doImport,
 	importError,
 	rewindSeconds,
+	openInNewTab,
 }: Props) {
 	const fileRef = useRef<HTMLInputElement>(null);
 	const groups = groupByVideo(bookmarks);
@@ -72,6 +74,7 @@ export function ListTab({
 						bookmarks={items}
 						onDelete={remove}
 						rewindSeconds={rewindSeconds}
+						openInNewTab={openInNewTab}
 					/>
 				))
 			)}

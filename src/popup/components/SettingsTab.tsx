@@ -28,6 +28,16 @@ export function SettingsTab({ settings, onUpdate }: Props) {
 					<span className="toggle-knob" />
 				</button>
 			</div>
+			<div className="setting-row">
+				<span className="setting-label">Open links in a new tab</span>
+				<button
+					type="button"
+					className={`toggle ${settings.openInNewTab ? "on" : ""}`}
+					onClick={() => onUpdate({ openInNewTab: !settings.openInNewTab })}
+				>
+					<span className="toggle-knob" />
+				</button>
+			</div>
 			<label className="setting-row">
 				<span className="setting-label">Rewind seconds on bookmark open</span>
 				<input

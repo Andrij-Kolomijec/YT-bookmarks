@@ -15,6 +15,7 @@ export interface Settings {
 	autoDeleteOnEnd: boolean;
 	rewindSeconds: number;
 	restorePlaybackSpeed: boolean;
+	openInNewTab: boolean;
 }
 
 export type SortOption = "newest" | "oldest" | "video" | "channel";

@@ -47,7 +47,7 @@ export default function App() {
 					<BookmarkTab videoInfo={videoInfo} loading={loading} onBookmark={bookmarkState.add} />
 				)}
 				{activeTab === "list" && (
-					<ListTab {...bookmarkState} rewindSeconds={settings.rewindSeconds} />
+					<ListTab {...bookmarkState} rewindSeconds={settings.rewindSeconds} openInNewTab={settings.openInNewTab} />
 				)}
 				{activeTab === "settings" && <SettingsTab settings={settings} onUpdate={updateSettings} />}
 			</main>
