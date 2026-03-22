@@ -123,23 +123,36 @@ function waitForVideo(): Promise<HTMLVideoElement | null> {
 	});
 }
 
-function attachVideoEndListener() {
-	const video = document.querySelector("video");
+// Track active auto-delete watcher so it can be cancelled on SPA navigation
+let autoDeleteCleanup: (() => void) | null = null;
+
+async function attachVideoEndListener() {
+	// Cancel previous watcher (YouTube reuses the same <video> element across navigations)
+	autoDeleteCleanup?.();
+	autoDeleteCleanup = null;
+
+	const video = await waitForVideo();
 	if (!video) return;
 
-	video.addEventListener(
-		"ended",
-		async () => {
+	// Capture videoId now — autoplay may change the URL before the handler runs
+	const videoId = getVideoId();
+	if (!videoId) return;
+
+	let deleted = false;
+	const onTimeUpdate = async () => {
+		if (deleted) return;
+		if (!video.duration || video.duration === Number.POSITIVE_INFINITY) return;
+		if (video.currentTime / video.duration >= 0.99) {
+			deleted = true;
+			video.removeEventListener("timeupdate", onTimeUpdate);
 			const settings = await getSettings();
 			if (!settings.autoDeleteOnEnd) return;
+			await deleteBookmarksForVideo(videoId);
+		}
+	};
 
-			const videoId = getVideoId();
-			if (videoId) {
-				await deleteBookmarksForVideo(videoId);
-			}
-		},
-		{ once: true },
-	);
+	video.addEventListener("timeupdate", onTimeUpdate);
+	autoDeleteCleanup = () => video.removeEventListener("timeupdate", onTimeUpdate);
 }
 
 function onPageReady() {
