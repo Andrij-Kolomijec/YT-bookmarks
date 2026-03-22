@@ -42,7 +42,7 @@
 	"manifest_version": 3,
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "yt-bookmarks@example.com",
+			"id": "yt-bookmarks@andrij-kolomijec.github.io",
 			"strict_min_version": "121.0"
 		}
 	}
