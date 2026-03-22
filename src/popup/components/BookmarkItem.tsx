@@ -23,9 +23,7 @@ export function BookmarkItem({ bookmark, onDelete, rewindSeconds }: Props) {
 			<a className="time-link" href={href} target="_blank" rel="noopener noreferrer">
 				{formatTime(bookmark.timestamp)}
 			</a>
-			{bookmark.playbackRate !== 1 && (
-				<span className="speed-badge">{bookmark.playbackRate}x</span>
-			)}
+			{bookmark.playbackRate !== 1 && <span className="speed-badge">{bookmark.playbackRate}x</span>}
 			<span className="note-text">{bookmark.note || "\u2014"}</span>
 			<button
 				className="delete-btn"
