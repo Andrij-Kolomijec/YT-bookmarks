@@ -39,12 +39,13 @@ export function useBookmarks() {
 	// State sync is handled by the storage.onChanged listener above,
 	// so we don't call setBookmarks here (avoids double renders).
 	const add = async (videoInfo: VideoInfo, timestamp: number, note: string) => {
-		const { currentTime: _, ...videoData } = videoInfo;
+		const { currentTime: _, playbackRate, ...videoData } = videoInfo;
 		const bookmark: Bookmark = {
 			id: crypto.randomUUID(),
 			...videoData,
 			timestamp,
 			note,
+			playbackRate,
 			createdAt: Date.now(),
 		};
 		await addBookmark(bookmark);
