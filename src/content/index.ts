@@ -84,9 +84,19 @@ async function applyBookmarkSpeed() {
 
 	// Wait for video element to be ready
 	const video = await waitForVideo();
-	if (video) {
-		video.playbackRate = match.playbackRate;
-	}
+	if (!video) return;
+
+	// Apply speed with retries — YouTube's player may reset playbackRate during init
+	const rate = match.playbackRate;
+	video.playbackRate = rate;
+	let attempts = 0;
+	const interval = setInterval(() => {
+		if (video.playbackRate !== rate) {
+			video.playbackRate = rate;
+		}
+		attempts++;
+		if (attempts >= 10) clearInterval(interval);
+	}, 300);
 }
 
 function waitForVideo(): Promise<HTMLVideoElement | null> {
