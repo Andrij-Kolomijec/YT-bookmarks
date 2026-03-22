@@ -1,6 +1,6 @@
 # YT Bookmarks
 
-A Chrome extension for bookmarking YouTube videos at specific timestamps. Save moments with notes, search and sort your collection, and export/import bookmarks as JSON.
+A browser extension for bookmarking YouTube videos at specific timestamps. Works in Chrome and Firefox. Save moments with notes, search and sort your collection, and export/import bookmarks as JSON.
 
 ## Features
 
@@ -13,10 +13,21 @@ A Chrome extension for bookmarking YouTube videos at specific timestamps. Save m
 
 ## Install
 
+### Chrome
+
 1. Clone or download this repo
-2. Open `chrome://extensions` in Chrome
+2. Open `chrome://extensions`
 3. Enable **Developer mode**
 4. Click **Load unpacked** and select the `dist` folder
+
+### Firefox
+
+1. Clone or download this repo
+2. Open `about:debugging#/runtime/this-firefox`
+3. Click **Load Temporary Add-on...**
+4. Select `dist/manifest.json`
+
+> Firefox temporary add-ons are removed when the browser closes. Requires Firefox 121+.
 
 The `dist` folder contains a pre-built extension ready to use. To build from source:
 
