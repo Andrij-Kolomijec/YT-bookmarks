@@ -14,6 +14,7 @@ export interface Bookmark {
 export interface Settings {
 	autoDeleteOnEnd: boolean;
 	rewindSeconds: number;
+	restorePlaybackSpeed: boolean;
 }
 
 export type SortOption = "newest" | "oldest" | "video" | "channel";

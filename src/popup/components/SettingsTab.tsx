@@ -8,14 +8,26 @@ interface Props {
 export function SettingsTab({ settings, onUpdate }: Props) {
 	return (
 		<div className="settings-tab">
-			<label className="setting-row">
+			<div className="setting-row">
 				<span className="setting-label">Auto-delete bookmarks when video ends</span>
-				<input
-					type="checkbox"
-					checked={settings.autoDeleteOnEnd}
-					onChange={(e) => onUpdate({ autoDeleteOnEnd: e.target.checked })}
-				/>
-			</label>
+				<button
+					type="button"
+					className={`toggle ${settings.autoDeleteOnEnd ? "on" : ""}`}
+					onClick={() => onUpdate({ autoDeleteOnEnd: !settings.autoDeleteOnEnd })}
+				>
+					<span className="toggle-knob" />
+				</button>
+			</div>
+			<div className="setting-row">
+				<span className="setting-label">Restore playback speed from bookmark</span>
+				<button
+					type="button"
+					className={`toggle ${settings.restorePlaybackSpeed ? "on" : ""}`}
+					onClick={() => onUpdate({ restorePlaybackSpeed: !settings.restorePlaybackSpeed })}
+				>
+					<span className="toggle-knob" />
+				</button>
+			</div>
 			<label className="setting-row">
 				<span className="setting-label">Rewind seconds on bookmark open</span>
 				<input

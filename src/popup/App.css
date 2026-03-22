@@ -380,3 +380,35 @@ body {
 	outline: none;
 	border-color: #cc0000;
 }
+
+.toggle {
+	position: relative;
+	width: 36px;
+	height: 20px;
+	background: #ccc;
+	border: none;
+	padding: 0;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: background 0.2s;
+	flex-shrink: 0;
+}
+
+.toggle.on {
+	background: #cc0000;
+}
+
+.toggle-knob {
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 16px;
+	height: 16px;
+	background: #fff;
+	border-radius: 50%;
+	transition: transform 0.2s;
+}
+
+.toggle.on .toggle-knob {
+	transform: translateX(16px);
+}

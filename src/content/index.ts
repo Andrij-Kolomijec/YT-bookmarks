@@ -62,6 +62,9 @@ function getVideoId(): string | null {
 }
 
 async function applyBookmarkSpeed() {
+	const settings = await getSettings();
+	if (!settings.restorePlaybackSpeed) return;
+
 	const videoId = getVideoId();
 	if (!videoId) return;
 
@@ -72,7 +75,6 @@ async function applyBookmarkSpeed() {
 	const seconds = Number.parseInt(tParam.replace("s", ""), 10);
 	if (Number.isNaN(seconds)) return;
 
-	const settings = await getSettings();
 	const tolerance = settings.rewindSeconds + 1;
 
 	const bookmarks = await getBookmarksForVideo(videoId);
