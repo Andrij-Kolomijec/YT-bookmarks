@@ -6,7 +6,7 @@ A browser extension for bookmarking YouTube videos at specific timestamps. Works
 
 - Bookmark the current timestamp on any YouTube video
 - Add optional notes to each bookmark
-- Keyboard shortcut: **Alt+B** to bookmark instantly
+- Keyboard shortcut: **Alt+B** (Mac: **Ctrl+Cmd+B**) to bookmark instantly — customizable via `chrome://extensions/shortcuts`
 - Saves playback speed per bookmark and restores it when opened
 - Configurable rewind offset so bookmarks open a few seconds earlier (default 5s)
 - Auto-delete bookmarks when a video reaches the end (optional, off by default)
