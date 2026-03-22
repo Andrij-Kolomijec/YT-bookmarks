@@ -9,7 +9,8 @@ A browser extension for bookmarking YouTube videos at specific timestamps. Works
 - Keyboard shortcut: **Alt+B** to bookmark instantly
 - Saves playback speed per bookmark and restores it when opened
 - Configurable rewind offset so bookmarks open a few seconds earlier (default 5s)
-- Auto-delete bookmarks when a video ends (optional, off by default)
+- Auto-delete bookmarks when a video reaches the end (optional, off by default)
+- Open bookmark links in the current tab or a new tab (configurable)
 - Search, sort, and browse bookmarks grouped by video
 - Export and import bookmarks as JSON
 - Badge count shows total bookmarks

@@ -7,4 +7,5 @@ export const DEFAULT_SETTINGS: Settings = {
 	autoDeleteOnEnd: false,
 	rewindSeconds: 5,
 	restorePlaybackSpeed: true,
+	openInNewTab: true,
 };

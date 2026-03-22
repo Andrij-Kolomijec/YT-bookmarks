@@ -5,9 +5,10 @@ interface Props {
 	bookmark: Bookmark;
 	onDelete: (id: string) => void;
 	rewindSeconds: number;
+	openInNewTab: boolean;
 }
 
-export function BookmarkItem({ bookmark, onDelete, rewindSeconds }: Props) {
+export function BookmarkItem({ bookmark, onDelete, rewindSeconds, openInNewTab }: Props) {
 	let href = bookmark.videoUrl;
 	try {
 		const url = new URL(bookmark.videoUrl);
@@ -18,9 +19,16 @@ export function BookmarkItem({ bookmark, onDelete, rewindSeconds }: Props) {
 		// fall back to raw videoUrl if malformed
 	}
 
+	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+		if (openInNewTab) return; // let default target="_blank" behavior handle it
+		e.preventDefault();
+		chrome.tabs.update({ url: href });
+		window.close();
+	};
+
 	return (
 		<div className="bookmark-item">
-			<a className="time-link" href={href} target="_blank" rel="noopener noreferrer">
+			<a className="time-link" href={href} target={openInNewTab ? "_blank" : "_self"} rel="noopener noreferrer" onClick={handleClick}>
 				{formatTime(bookmark.timestamp)}
 			</a>
 			{bookmark.playbackRate !== 1 && <span className="speed-badge">{bookmark.playbackRate}x</span>}

@@ -8,6 +8,7 @@ interface Props {
 	bookmarks: Bookmark[];
 	onDelete: (id: string) => void;
 	rewindSeconds: number;
+	openInNewTab: boolean;
 }
 
 export function BookmarkGroup({
@@ -16,6 +17,7 @@ export function BookmarkGroup({
 	bookmarks,
 	onDelete,
 	rewindSeconds,
+	openInNewTab,
 }: Props) {
 	const [open, setOpen] = useState(true);
 
@@ -29,7 +31,7 @@ export function BookmarkGroup({
 			</button>
 			{open &&
 				bookmarks.map((b) => (
-					<BookmarkItem key={b.id} bookmark={b} onDelete={onDelete} rewindSeconds={rewindSeconds} />
+					<BookmarkItem key={b.id} bookmark={b} onDelete={onDelete} rewindSeconds={rewindSeconds} openInNewTab={openInNewTab} />
 				))}
 		</div>
 	);
