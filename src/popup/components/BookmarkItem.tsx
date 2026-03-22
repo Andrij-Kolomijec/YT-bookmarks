@@ -38,7 +38,7 @@ export function BookmarkItem({ bookmark, onDelete, rewindSeconds, openInNewTab }
 				title="Delete bookmark"
 				type="button"
 			>
-				&times;
+				{"\u00D7"}
 			</button>
 		</div>
 	);
