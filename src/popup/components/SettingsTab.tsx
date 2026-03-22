@@ -1,4 +1,5 @@
 import type { Settings } from "../../shared/types";
+import { Toggle } from "./Toggle";
 
 interface Props {
 	settings: Settings;
@@ -8,36 +9,21 @@ interface Props {
 export function SettingsTab({ settings, onUpdate }: Props) {
 	return (
 		<div className="settings-tab">
-			<div className="setting-row">
-				<span className="setting-label">Auto-delete bookmarks when video ends</span>
-				<button
-					type="button"
-					className={`toggle ${settings.autoDeleteOnEnd ? "on" : ""}`}
-					onClick={() => onUpdate({ autoDeleteOnEnd: !settings.autoDeleteOnEnd })}
-				>
-					<span className="toggle-knob" />
-				</button>
-			</div>
-			<div className="setting-row">
-				<span className="setting-label">Restore playback speed from bookmark</span>
-				<button
-					type="button"
-					className={`toggle ${settings.restorePlaybackSpeed ? "on" : ""}`}
-					onClick={() => onUpdate({ restorePlaybackSpeed: !settings.restorePlaybackSpeed })}
-				>
-					<span className="toggle-knob" />
-				</button>
-			</div>
-			<div className="setting-row">
-				<span className="setting-label">Open links in a new tab</span>
-				<button
-					type="button"
-					className={`toggle ${settings.openInNewTab ? "on" : ""}`}
-					onClick={() => onUpdate({ openInNewTab: !settings.openInNewTab })}
-				>
-					<span className="toggle-knob" />
-				</button>
-			</div>
+			<Toggle
+				label="Auto-delete bookmarks when video ends"
+				checked={settings.autoDeleteOnEnd}
+				onChange={(v) => onUpdate({ autoDeleteOnEnd: v })}
+			/>
+			<Toggle
+				label="Restore playback speed from bookmark"
+				checked={settings.restorePlaybackSpeed}
+				onChange={(v) => onUpdate({ restorePlaybackSpeed: v })}
+			/>
+			<Toggle
+				label="Open links in a new tab"
+				checked={settings.openInNewTab}
+				onChange={(v) => onUpdate({ openInNewTab: v })}
+			/>
 			<label className="setting-row">
 				<span className="setting-label">Rewind seconds on bookmark open</span>
 				<input
