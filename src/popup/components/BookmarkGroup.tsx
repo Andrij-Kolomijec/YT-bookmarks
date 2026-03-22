@@ -7,9 +7,10 @@ interface Props {
 	thumbnailUrl: string;
 	bookmarks: Bookmark[];
 	onDelete: (id: string) => void;
+	rewindSeconds: number;
 }
 
-export function BookmarkGroup({ videoTitle, thumbnailUrl, bookmarks, onDelete }: Props) {
+export function BookmarkGroup({ videoTitle, thumbnailUrl, bookmarks, onDelete, rewindSeconds }: Props) {
 	const [open, setOpen] = useState(true);
 
 	return (
@@ -20,7 +21,7 @@ export function BookmarkGroup({ videoTitle, thumbnailUrl, bookmarks, onDelete }:
 				<span className="group-count">{bookmarks.length}</span>
 				<span>{open ? "\u25BE" : "\u25B8"}</span>
 			</button>
-			{open && bookmarks.map((b) => <BookmarkItem key={b.id} bookmark={b} onDelete={onDelete} />)}
+			{open && bookmarks.map((b) => <BookmarkItem key={b.id} bookmark={b} onDelete={onDelete} rewindSeconds={rewindSeconds} />)}
 		</div>
 	);
 }
