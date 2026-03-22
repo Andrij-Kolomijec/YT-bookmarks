@@ -45,6 +45,7 @@ body {
 	border-bottom: 2px solid transparent;
 	color: #666;
 	transition: all 0.15s;
+	white-space: nowrap;
 }
 
 .tab:hover {
