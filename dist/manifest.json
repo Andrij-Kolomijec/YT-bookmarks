@@ -8,7 +8,7 @@
 		"bookmark-current": {
 			"suggested_key": {
 				"default": "Alt+B",
-				"mac": "Alt+B"
+				"mac": "MacCtrl+Command+B"
 			},
 			"description": "Bookmark current video at current time"
 		}
