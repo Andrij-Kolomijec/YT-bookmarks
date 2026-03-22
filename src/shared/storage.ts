@@ -1,5 +1,5 @@
-import { STORAGE_KEY } from "./constants";
-import type { Bookmark, SortOption } from "./types";
+import { DEFAULT_SETTINGS, SETTINGS_KEY, STORAGE_KEY } from "./constants";
+import type { Bookmark, Settings, SortOption } from "./types";
 
 export async function getBookmarks(): Promise<Bookmark[]> {
 	const result = await chrome.storage.local.get(STORAGE_KEY);
@@ -29,6 +29,22 @@ export async function deleteBookmark(id: string): Promise<Bookmark[]> {
 export async function getBookmarksForVideo(videoId: string): Promise<Bookmark[]> {
 	const bookmarks = await getBookmarks();
 	return bookmarks.filter((b) => b.videoId === videoId);
+}
+
+export async function deleteBookmarksForVideo(videoId: string): Promise<Bookmark[]> {
+	const bookmarks = await getBookmarks();
+	const updated = bookmarks.filter((b) => b.videoId !== videoId);
+	await chrome.storage.local.set({ [STORAGE_KEY]: updated });
+	return updated;
+}
+
+export async function getSettings(): Promise<Settings> {
+	const result = await chrome.storage.local.get(SETTINGS_KEY);
+	return { ...DEFAULT_SETTINGS, ...result[SETTINGS_KEY] };
+}
+
+export async function saveSettings(settings: Settings): Promise<void> {
+	await chrome.storage.local.set({ [SETTINGS_KEY]: settings });
 }
 
 export function sortBookmarks(bookmarks: Bookmark[], sort: SortOption): Bookmark[] {
@@ -92,7 +108,10 @@ export async function importBookmarks(json: string): Promise<Bookmark[]> {
 			throw new Error("Invalid bookmark format: missing or malformed fields");
 		}
 	}
-	const imported = parsed as Bookmark[];
+	const imported = parsed.map((b: Record<string, unknown>) => ({
+		...b,
+		playbackRate: typeof b.playbackRate === "number" ? b.playbackRate : 1,
+	})) as Bookmark[];
 	const existing = await getBookmarks();
 	const existingIds = new Set(existing.map((b) => b.id));
 	const newBookmarks = imported.filter((b) => !existingIds.has(b.id));
