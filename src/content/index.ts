@@ -1,3 +1,4 @@
+import { deleteBookmarksForVideo, getBookmarksForVideo, getSettings } from "../shared/storage";
 import type { Message, VideoInfo } from "../shared/types";
 
 function buildVideoUrl(videoId: string, params: URLSearchParams): string {
@@ -45,6 +46,7 @@ function getVideoInfo(): VideoInfo | null {
 		channelName,
 		thumbnailUrl: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
 		currentTime: Math.floor(video.currentTime),
+		playbackRate: video.playbackRate,
 	};
 }
 
@@ -53,4 +55,61 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
 		sendResponse({ type: "VIDEO_INFO", data: getVideoInfo() });
 	}
 	return true;
+});
+
+function getVideoId(): string | null {
+	return new URLSearchParams(window.location.search).get("v");
+}
+
+async function applyBookmarkSpeed() {
+	const video = document.querySelector("video");
+	if (!video) return;
+
+	const videoId = getVideoId();
+	if (!videoId) return;
+
+	const urlParams = new URLSearchParams(window.location.search);
+	const tParam = urlParams.get("t");
+	if (!tParam) return;
+
+	const seconds = Number.parseInt(tParam.replace("s", ""), 10);
+	if (Number.isNaN(seconds)) return;
+
+	const bookmarks = await getBookmarksForVideo(videoId);
+	const match = bookmarks.find((b) => Math.abs(b.timestamp - seconds) <= 1);
+	if (match?.playbackRate) {
+		video.playbackRate = match.playbackRate;
+	}
+}
+
+function attachVideoEndListener() {
+	const video = document.querySelector("video");
+	if (!video) return;
+
+	video.addEventListener(
+		"ended",
+		async () => {
+			const settings = await getSettings();
+			if (!settings.autoDeleteOnEnd) return;
+
+			const videoId = getVideoId();
+			if (videoId) {
+				await deleteBookmarksForVideo(videoId);
+			}
+		},
+		{ once: true },
+	);
+}
+
+function onPageReady() {
+	applyBookmarkSpeed();
+	attachVideoEndListener();
+}
+
+// Initial load
+onPageReady();
+
+// YouTube SPA navigation
+document.addEventListener("yt-navigate-finish", () => {
+	onPageReady();
 });

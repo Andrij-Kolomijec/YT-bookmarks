@@ -1,5 +1,5 @@
-import sharp from "sharp";
 import { mkdirSync } from "node:fs";
+import sharp from "sharp";
 
 // Red-filled bookmark (from Heroicons outline, converted to filled) with white play triangle
 const svg = `
@@ -20,10 +20,7 @@ mkdirSync("public/icons", { recursive: true });
 const sizes = [16, 32, 48, 128];
 
 for (const size of sizes) {
-	await sharp(Buffer.from(svg))
-		.resize(size, size)
-		.png()
-		.toFile(`public/icons/icon-${size}.png`);
+	await sharp(Buffer.from(svg)).resize(size, size).png().toFile(`public/icons/icon-${size}.png`);
 	console.log(`Generated icon-${size}.png`);
 }
 

@@ -2,17 +2,14 @@ import { useState } from "react";
 import "./App.css";
 import { BookmarkTab } from "./components/BookmarkTab";
 import { ListTab } from "./components/ListTab";
-import { SettingsTab } from "./components/SettingsTab";
 import { useBookmarks, useVideoInfo } from "./hooks/useBookmarks";
-import { useSettings } from "./hooks/useSettings";
 
-type Tab = "bookmark" | "list" | "settings";
+type Tab = "bookmark" | "list";
 
 export default function App() {
 	const [activeTab, setActiveTab] = useState<Tab>("bookmark");
 	const { videoInfo, loading } = useVideoInfo();
 	const bookmarkState = useBookmarks();
-	const { settings, update: updateSettings } = useSettings();
 
 	return (
 		<div className="popup">
@@ -33,20 +30,17 @@ export default function App() {
 					>
 						My Bookmarks ({bookmarkState.bookmarks.length})
 					</button>
-					<button
-						className={activeTab === "settings" ? "tab active" : "tab"}
-						onClick={() => setActiveTab("settings")}
-						type="button"
-					>
-						Settings
-					</button>
 				</nav>
 			</header>
 			<main className="content">
-				{activeTab === "bookmark" && (
+				{activeTab === "bookmark" ? (
 					<BookmarkTab videoInfo={videoInfo} loading={loading} onBookmark={bookmarkState.add} />
+				) : (
+					<ListTab {...bookmarkState} />
 				)}
-				{activeTab === "list" && <ListTab {...bookmarkState} rewindSeconds={settings.rewindSeconds} />}
+				{activeTab === "list" && (
+					<ListTab {...bookmarkState} rewindSeconds={settings.rewindSeconds} />
+				)}
 				{activeTab === "settings" && <SettingsTab settings={settings} onUpdate={updateSettings} />}
 			</main>
 		</div>
