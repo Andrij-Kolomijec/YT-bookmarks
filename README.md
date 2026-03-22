@@ -11,16 +11,19 @@ A Chrome extension for bookmarking YouTube videos at specific timestamps. Save m
 - Export and import bookmarks as JSON
 - Badge count shows total bookmarks
 
-## Setup
+## Install
+
+1. Clone or download this repo
+2. Open `chrome://extensions` in Chrome
+3. Enable **Developer mode**
+4. Click **Load unpacked** and select the `dist` folder
+
+The `dist` folder contains a pre-built extension ready to use. To build from source:
 
 ```sh
 pnpm install
 pnpm build
 ```
-
-1. Open `chrome://extensions` in Chrome
-2. Enable **Developer mode**
-3. Click **Load unpacked** and select the `dist` folder
 
 ## Development
 
