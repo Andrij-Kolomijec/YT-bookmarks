@@ -91,14 +91,25 @@ async function applyBookmarkSpeed() {
 	// Apply speed with retries — YouTube's player may reset playbackRate during init
 	const rate = match.playbackRate;
 	video.playbackRate = rate;
-	let attempts = 0;
-	const interval = setInterval(() => {
+	speedRetryInterval = setInterval(() => {
 		if (video.playbackRate !== rate) {
 			video.playbackRate = rate;
 		}
-		attempts++;
-		if (attempts >= 10) clearInterval(interval);
+		speedRetryAttempts++;
+		if (speedRetryAttempts >= 10) clearSpeedRetry();
 	}, 300);
+}
+
+// Track playback speed retry interval so it can be cancelled on SPA navigation
+let speedRetryInterval: ReturnType<typeof setInterval> | null = null;
+let speedRetryAttempts = 0;
+
+function clearSpeedRetry() {
+	if (speedRetryInterval) {
+		clearInterval(speedRetryInterval);
+		speedRetryInterval = null;
+	}
+	speedRetryAttempts = 0;
 }
 
 function waitForVideo(): Promise<HTMLVideoElement | null> {
@@ -156,6 +167,7 @@ async function attachVideoEndListener() {
 }
 
 function onPageReady() {
+	clearSpeedRetry();
 	applyBookmarkSpeed();
 	attachVideoEndListener();
 }
