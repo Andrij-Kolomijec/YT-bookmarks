@@ -7,6 +7,9 @@ A browser extension for bookmarking YouTube videos at specific timestamps. Works
 - Bookmark the current timestamp on any YouTube video
 - Add optional notes to each bookmark
 - Keyboard shortcut: **Alt+B** to bookmark instantly
+- Saves playback speed per bookmark and restores it when opened
+- Configurable rewind offset so bookmarks open a few seconds earlier (default 5s)
+- Auto-delete bookmarks when a video ends (optional, off by default)
 - Search, sort, and browse bookmarks grouped by video
 - Export and import bookmarks as JSON
 - Badge count shows total bookmarks
@@ -43,3 +46,7 @@ pnpm dev     # start Vite dev server
 pnpm lint    # run Biome linter
 pnpm format  # auto-format with Biome
 ```
+
+---
+
+Built with the help of [Claude Opus 4.6](https://claude.ai/) by Anthropic.
