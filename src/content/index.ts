@@ -62,9 +62,6 @@ function getVideoId(): string | null {
 }
 
 async function applyBookmarkSpeed() {
-	const video = document.querySelector("video");
-	if (!video) return;
-
 	const videoId = getVideoId();
 	if (!videoId) return;
 
@@ -75,11 +72,43 @@ async function applyBookmarkSpeed() {
 	const seconds = Number.parseInt(tParam.replace("s", ""), 10);
 	if (Number.isNaN(seconds)) return;
 
+	const settings = await getSettings();
+	const tolerance = settings.rewindSeconds + 1;
+
 	const bookmarks = await getBookmarksForVideo(videoId);
-	const match = bookmarks.find((b) => Math.abs(b.timestamp - seconds) <= 1);
-	if (match?.playbackRate) {
+	const match = bookmarks.find((b) => {
+		const diff = b.timestamp - seconds;
+		return diff >= 0 && diff <= tolerance;
+	});
+	if (!match?.playbackRate || match.playbackRate === 1) return;
+
+	// Wait for video element to be ready
+	const video = await waitForVideo();
+	if (video) {
 		video.playbackRate = match.playbackRate;
 	}
+}
+
+function waitForVideo(): Promise<HTMLVideoElement | null> {
+	return new Promise((resolve) => {
+		const existing = document.querySelector("video");
+		if (existing) {
+			resolve(existing);
+			return;
+		}
+		const observer = new MutationObserver(() => {
+			const video = document.querySelector("video");
+			if (video) {
+				observer.disconnect();
+				resolve(video);
+			}
+		});
+		observer.observe(document.body, { childList: true, subtree: true });
+		setTimeout(() => {
+			observer.disconnect();
+			resolve(null);
+		}, 5000);
+	});
 }
 
 function attachVideoEndListener() {
