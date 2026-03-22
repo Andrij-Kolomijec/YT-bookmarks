@@ -20,10 +20,9 @@ export function BookmarkItem({ bookmark, onDelete, rewindSeconds, openInNewTab }
 	}
 
 	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-		if (openInNewTab) return; // let default target="_blank" behavior handle it
+		if (openInNewTab) return;
 		e.preventDefault();
-		chrome.tabs.update({ url: href });
-		window.close();
+		chrome.tabs.update({ url: href }).then(() => window.close()).catch(() => window.open(href));
 	};
 
 	return (
