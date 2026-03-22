@@ -8,6 +8,12 @@ export interface Bookmark {
 	timestamp: number; // seconds
 	note: string;
 	createdAt: number; // Date.now()
+	playbackRate: number; // e.g. 1, 1.5, 2
+}
+
+export interface Settings {
+	autoDeleteOnEnd: boolean;
+	rewindSeconds: number;
 }
 
 export type SortOption = "newest" | "oldest" | "video" | "channel";
@@ -25,4 +31,5 @@ export interface VideoInfo {
 	channelName: string;
 	thumbnailUrl: string;
 	currentTime: number;
+	playbackRate: number;
 }
