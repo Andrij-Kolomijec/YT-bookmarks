@@ -31,12 +31,14 @@ chrome.commands.onCommand.addListener(async (command) => {
 	const videoInfo: VideoInfo | null = response?.data;
 	if (!videoInfo) return;
 
+	const { currentTime, playbackRate, ...videoData } = videoInfo;
 	const bookmark: Bookmark = {
 		id: crypto.randomUUID(),
-		...videoInfo,
+		...videoData,
 		note: "",
 		createdAt: Date.now(),
-		timestamp: videoInfo.currentTime,
+		timestamp: currentTime,
+		playbackRate,
 	};
 
 	try {
