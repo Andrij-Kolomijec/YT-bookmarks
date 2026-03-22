@@ -23,6 +23,8 @@ A browser extension for bookmarking YouTube videos at specific timestamps. Works
 3. Enable **Developer mode**
 4. Click **Load unpacked** and select the `dist` folder
 
+> You may see a warning: *"'background.scripts' requires manifest version of 2 or lower."* This is safe to ignore — the field exists for Firefox compatibility and Chrome simply skips it.
+
 ### Firefox
 
 1. Clone or download this repo
