@@ -317,6 +317,15 @@ body {
 	white-space: nowrap;
 }
 
+.bookmark-item .speed-badge {
+	font-size: 10px;
+	color: #fff;
+	background: #666;
+	padding: 1px 4px;
+	border-radius: 3px;
+	white-space: nowrap;
+}
+
 .bookmark-item .delete-btn {
 	background: none;
 	border: none;
