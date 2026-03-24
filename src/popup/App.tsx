@@ -3,6 +3,7 @@ import "./App.css";
 import { BookmarkTab } from "./components/BookmarkTab";
 import { ListTab } from "./components/ListTab";
 import { SettingsTab } from "./components/SettingsTab";
+import { ShortcutHint } from "./components/ShortcutHint";
 import { useBookmarks, useVideoInfo } from "./hooks/useBookmarks";
 import { useSettings } from "./hooks/useSettings";
 
@@ -51,6 +52,7 @@ export default function App() {
 				)}
 				{activeTab === "settings" && <SettingsTab settings={settings} onUpdate={updateSettings} />}
 			</main>
+			{activeTab !== "list" && <ShortcutHint />}
 		</div>
 	);
 }
