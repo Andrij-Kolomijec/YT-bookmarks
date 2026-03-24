@@ -1,7 +1,7 @@
 {
 	"name": "yt-bookmarks",
 	"private": true,
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"repository": "https://github.com/Andrij-Kolomijec/YT-bookmarks",
 	"type": "module",
 	"scripts": {

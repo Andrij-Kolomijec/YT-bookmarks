@@ -1,6 +1,6 @@
 {
 	"name": "YT Bookmarks",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Bookmark YouTube videos at specific timestamps",
 	"permissions": ["storage", "tabs", "activeTab"],
 	"host_permissions": ["https://*.youtube.com/*"],
