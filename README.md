@@ -33,7 +33,7 @@ A browser extension for bookmarking YouTube videos at specific timestamps. Works
 3. Click **Load Temporary Add-on...**
 4. Select `dist/manifest.json`
 
-> Firefox temporary add-ons are removed when the browser closes. Requires Firefox 121+.
+> Firefox temporary add-ons are removed when the browser closes. Requires Firefox 140+.
 
 The `dist` folder contains a pre-built extension ready to use. To build from source:
 
@@ -49,7 +49,3 @@ pnpm dev     # start Vite dev server
 pnpm lint    # run Biome linter
 pnpm format  # auto-format with Biome
 ```
-
----
-
-Built with the help of [Claude Opus 4.6](https://claude.ai/) by Anthropic.
