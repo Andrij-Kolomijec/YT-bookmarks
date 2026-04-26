@@ -19,27 +19,56 @@ export function BookmarkItem({ bookmark, onDelete, rewindSeconds, openInNewTab }
 		// fall back to raw videoUrl if malformed
 	}
 
-	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-		if (openInNewTab) return;
+	const navigate = (e: React.MouseEvent | React.KeyboardEvent) => {
 		e.preventDefault();
-		chrome.tabs.update({ url: href }).then(() => window.close()).catch(() => window.open(href));
+		if (openInNewTab) {
+			window.open(href, "_blank", "noopener,noreferrer");
+		} else {
+			chrome.tabs
+				.update({ url: href })
+				.then(() => window.close())
+				.catch(() => window.open(href));
+		}
+	};
+
+	const handleDeleteClick = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+		onDelete(bookmark.id);
 	};
 
 	return (
-		<div className="bookmark-item">
-			<a className="time-link" href={href} target={openInNewTab ? "_blank" : "_self"} rel="noopener noreferrer" onClick={handleClick}>
-				{formatTime(bookmark.timestamp)}
-			</a>
+		<a
+			className="bookmark-item"
+			href={href}
+			onClick={navigate}
+			onKeyDown={(e) => {
+				if (e.key === "Enter") navigate(e);
+			}}
+		>
+			<span className="time-link">{formatTime(bookmark.timestamp)}</span>
 			{bookmark.playbackRate !== 1 && <span className="speed-badge">{bookmark.playbackRate}x</span>}
 			<span className="note-text">{bookmark.note || "\u2014"}</span>
 			<button
 				className="delete-btn"
-				onClick={() => onDelete(bookmark.id)}
+				onClick={handleDeleteClick}
 				title="Delete bookmark"
 				type="button"
 			>
-				{"\u00D7"}
+				<svg
+					aria-hidden="true"
+					width="14"
+					height="14"
+					viewBox="0 0 16 16"
+					fill="none"
+					stroke="currentColor"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				>
+					<path d="M2 4h12M5.333 4V2.667a1.333 1.333 0 0 1 1.334-1.334h2.666a1.333 1.333 0 0 1 1.334 1.334V4M13 4v9.333a1.333 1.333 0 0 1-1.333 1.334H4.333A1.333 1.333 0 0 1 3 13.333V4h10zM6.667 7.333v4M9.333 7.333v4" />
+				</svg>
 			</button>
-		</div>
+		</a>
 	);
 }
