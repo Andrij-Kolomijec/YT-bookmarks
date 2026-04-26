@@ -12,35 +12,37 @@ A browser extension for bookmarking YouTube videos at specific timestamps. Works
 - Auto-delete bookmarks when a video reaches the end (optional, off by default)
 - Open bookmark links in the current tab or a new tab (configurable)
 - Search, sort, and browse bookmarks grouped by video
+- Expand/collapse all bookmark groups at once
 - Export and import bookmarks as JSON
+- Auto-opens My Bookmarks when not on a YouTube page
 - Badge count shows total bookmarks
 
 ## Install
 
+Download the latest `yt-bookmarks-*.zip` from [Releases](https://github.com/Andrij-Kolomijec/YT-bookmarks/releases) and unzip it.
+
 ### Chrome
 
-1. Clone or download this repo
-2. Open `chrome://extensions`
-3. Enable **Developer mode**
-4. Click **Load unpacked** and select the `dist` folder
-
-> You may see a warning: *"'background.scripts' requires manifest version of 2 or lower."* This is safe to ignore — the field exists for Firefox compatibility and Chrome simply skips it.
+1. Open `chrome://extensions`
+2. Enable **Developer mode**
+3. Click **Load unpacked** and select the unzipped folder
 
 ### Firefox
 
-1. Clone or download this repo
-2. Open `about:debugging#/runtime/this-firefox`
-3. Click **Load Temporary Add-on...**
-4. Select `dist/manifest.json`
+1. Open `about:debugging#/runtime/this-firefox`
+2. Click **Load Temporary Add-on...**
+3. Select `manifest.json` from the unzipped folder
 
 > Firefox temporary add-ons are removed when the browser closes. Requires Firefox 140+.
 
-The `dist` folder contains a pre-built extension ready to use. To build from source:
+To build from source instead:
 
 ```sh
 pnpm install
 pnpm build
 ```
+
+Then load the `dist` folder as described above.
 
 ## Development
 
