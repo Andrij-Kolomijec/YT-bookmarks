@@ -108,10 +108,29 @@ export async function importBookmarks(json: string): Promise<Bookmark[]> {
 			throw new Error("Invalid bookmark format: missing or malformed fields");
 		}
 	}
-	const imported = parsed.map((b: Record<string, unknown>) => ({
-		...b,
-		playbackRate: typeof b.playbackRate === "number" ? b.playbackRate : 1,
-	})) as Bookmark[];
+	for (const b of parsed) {
+		if (
+			!b.videoUrl.startsWith("https://www.youtube.com/") &&
+			!b.videoUrl.startsWith("https://youtube.com/") &&
+			!b.videoUrl.startsWith("https://m.youtube.com/")
+		) {
+			throw new Error("Invalid bookmark format: videoUrl must be a YouTube URL");
+		}
+	}
+	const imported = parsed.map(
+		(b: Record<string, unknown>): Bookmark => ({
+			id: b.id as string,
+			videoId: b.videoId as string,
+			videoTitle: b.videoTitle as string,
+			videoUrl: b.videoUrl as string,
+			channelName: b.channelName as string,
+			thumbnailUrl: b.thumbnailUrl as string,
+			timestamp: b.timestamp as number,
+			note: b.note as string,
+			createdAt: b.createdAt as number,
+			playbackRate: typeof b.playbackRate === "number" ? b.playbackRate : 1,
+		}),
+	);
 	const existing = await getBookmarks();
 	const existingIds = new Set(existing.map((b) => b.id));
 	const newBookmarks = imported.filter((b) => !existingIds.has(b.id));
