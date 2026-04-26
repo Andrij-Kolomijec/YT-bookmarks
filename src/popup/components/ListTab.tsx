@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { groupByVideo } from "../../shared/storage";
 import type { Bookmark, SortOption } from "../../shared/types";
 import { BookmarkGroup } from "./BookmarkGroup";
@@ -33,6 +33,7 @@ export function ListTab({
 	openInNewTab,
 }: Props) {
 	const fileRef = useRef<HTMLInputElement>(null);
+	const [allExpanded, setAllExpanded] = useState(true);
 	const groups = groupByVideo(bookmarks);
 
 	return (
@@ -59,6 +60,16 @@ export function ListTab({
 						e.target.value = "";
 					}}
 				/>
+				{groups.size > 1 && (
+					<button
+						className="expand-all-btn"
+						onClick={() => setAllExpanded((v) => !v)}
+						title={allExpanded ? "Collapse all" : "Expand all"}
+						type="button"
+					>
+						{allExpanded ? "\u25BE" : "\u25B8"}
+					</button>
+				)}
 			</div>
 			{importError && <div className="status-msg error">{importError}</div>}
 			{bookmarks.length === 0 ? (
@@ -75,6 +86,7 @@ export function ListTab({
 						onDelete={remove}
 						rewindSeconds={rewindSeconds}
 						openInNewTab={openInNewTab}
+						expandAll={allExpanded}
 					/>
 				))
 			)}
