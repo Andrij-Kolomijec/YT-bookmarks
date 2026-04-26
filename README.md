@@ -19,23 +19,14 @@ A browser extension for bookmarking YouTube videos at specific timestamps. Works
 
 ## Install
 
-Download the latest `yt-bookmarks-*.zip` from [Releases](https://github.com/Andrij-Kolomijec/YT-bookmarks/releases) and unzip it.
-
 ### Chrome
 
-1. Open `chrome://extensions`
-2. Enable **Developer mode**
-3. Click **Load unpacked** and select the unzipped folder
+1. Download the latest `yt-bookmarks-*.zip` from [Releases](https://github.com/Andrij-Kolomijec/YT-bookmarks/releases) and unzip it.
+2. Open `chrome://extensions`
+3. Enable **Developer mode**
+4. Click **Load unpacked** and select the unzipped folder
 
-### Firefox
-
-1. Open `about:debugging#/runtime/this-firefox`
-2. Click **Load Temporary Add-on...**
-3. Select `manifest.json` from the unzipped folder
-
-> Firefox temporary add-ons are removed when the browser closes. Requires Firefox 140+.
-
-To build from source instead:
+To build from source instead
 
 ```sh
 pnpm install
@@ -43,6 +34,10 @@ pnpm build
 ```
 
 Then load the `dist` folder as described above.
+
+### Firefox
+
+1. Download the latest `yt-bookmarks-*.xpi` from [Releases](https://github.com/Andrij-Kolomijec/YT-bookmarks/releases).
 
 ## Development
 
