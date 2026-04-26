@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Bookmark } from "../../shared/types";
 import { BookmarkItem } from "./BookmarkItem";
 
@@ -9,6 +9,7 @@ interface Props {
 	onDelete: (id: string) => void;
 	rewindSeconds: number;
 	openInNewTab: boolean;
+	expandAll: boolean;
 }
 
 export function BookmarkGroup({
@@ -18,8 +19,13 @@ export function BookmarkGroup({
 	onDelete,
 	rewindSeconds,
 	openInNewTab,
+	expandAll,
 }: Props) {
 	const [open, setOpen] = useState(true);
+
+	useEffect(() => {
+		setOpen(expandAll);
+	}, [expandAll]);
 
 	return (
 		<div className="video-group">
@@ -31,7 +37,13 @@ export function BookmarkGroup({
 			</button>
 			{open &&
 				bookmarks.map((b) => (
-					<BookmarkItem key={b.id} bookmark={b} onDelete={onDelete} rewindSeconds={rewindSeconds} openInNewTab={openInNewTab} />
+					<BookmarkItem
+						key={b.id}
+						bookmark={b}
+						onDelete={onDelete}
+						rewindSeconds={rewindSeconds}
+						openInNewTab={openInNewTab}
+					/>
 				))}
 		</div>
 	);
