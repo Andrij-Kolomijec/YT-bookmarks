@@ -24,7 +24,8 @@ export function useSettings() {
 	}, [load]);
 
 	const update = async (patch: Partial<Settings>) => {
-		const updated = { ...settings, ...patch };
+		const current = await getSettings();
+		const updated = { ...current, ...patch };
 		setSettings(updated);
 		await saveSettings(updated);
 	};
