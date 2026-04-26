@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { STORAGE_KEY } from "../../shared/constants";
 import {
 	addBookmark,
@@ -33,8 +33,10 @@ export function useBookmarks() {
 		return () => chrome.storage.onChanged.removeListener(listener);
 	}, [load]);
 
-	const filtered = filterBookmarks(bookmarks, search);
-	const sorted = sortBookmarks(filtered, sort);
+	const sorted = useMemo(() => {
+		const filtered = filterBookmarks(bookmarks, search);
+		return sortBookmarks(filtered, sort);
+	}, [bookmarks, search, sort]);
 
 	// State sync is handled by the storage.onChanged listener above,
 	// so we don't call setBookmarks here (avoids double renders).
