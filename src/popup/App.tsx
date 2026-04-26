@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { BookmarkTab } from "./components/BookmarkTab";
 import { ListTab } from "./components/ListTab";
@@ -14,6 +14,12 @@ export default function App() {
 	const { videoInfo, loading } = useVideoInfo();
 	const bookmarkState = useBookmarks();
 	const { settings, update: updateSettings } = useSettings();
+
+	useEffect(() => {
+		if (!loading && !videoInfo) {
+			setActiveTab("list");
+		}
+	}, [loading, videoInfo]);
 
 	return (
 		<div className="popup">
@@ -48,7 +54,11 @@ export default function App() {
 					<BookmarkTab videoInfo={videoInfo} loading={loading} onBookmark={bookmarkState.add} />
 				)}
 				{activeTab === "list" && (
-					<ListTab {...bookmarkState} rewindSeconds={settings.rewindSeconds} openInNewTab={settings.openInNewTab} />
+					<ListTab
+						{...bookmarkState}
+						rewindSeconds={settings.rewindSeconds}
+						openInNewTab={settings.openInNewTab}
+					/>
 				)}
 				{activeTab === "settings" && <SettingsTab settings={settings} onUpdate={updateSettings} />}
 			</main>
